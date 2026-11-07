@@ -1,0 +1,49 @@
+# Natu Enterprise - Furniture Store Management (ASP.NET Core website)
+
+C# website built from the design report (Option 4). Requires the **.NET 8 SDK**.
+
+## Run
+
+    cd NatuFurniture
+    dotnet run
+
+Open the URL printed in the terminal (usually http://localhost:5000 or https://localhost:5001).
+Data is saved to `App_Data/store.json` after every change; delete that file to reset to the sample data.
+
+## Demo accounts
+
+| Role      | Email                      | Password   |
+|-----------|----------------------------|------------|
+| Manager   | natuenterprise@store.com   | Natu@2026  |
+| Sales     | sales@store.com            | Sales@2026 |
+| Warehouse | warehouse@store.com        | Store@2026 |
+| Customer  | thanish@mail.com           | (none)     |
+| Customer  | kevin@mail.com             | (none)     |
+
+## Try the repossession workflow
+
+1. Log in as Thanish, tick an item, choose Credit (e.g. 6 instalments), place the order.
+2. Log out, log in as the manager, open **Overdue checks**.
+3. Run the check with a date about 1 month + 1 day ahead (Pending -> Overdue), then ~8 days after that
+   (late fee, Warning 1), then +7 days each run for Warning 2, Warning 3 and finally Repossessed.
+4. Check **Reports** (repossessed items, audit log), the **Catalogue** (second-hand item back in stock)
+   and log in as Thanish to see warnings and the credit blacklist.
+
+## Where the report's pieces live
+
+| Report item                          | File |
+|--------------------------------------|------|
+| Enums (Tables 1-5)                   | Domain/Enums.cs |
+| IObserver / IPricingStrategy / IPaymentState | Domain/Interfaces.cs |
+| User, Staff, Customer                | Domain/Users.cs |
+| Furniture, Sofa, Table, Bed, Wardrobe| Domain/Furniture.cs |
+| Pricing strategies                   | Domain/Pricing.cs |
+| Payment, CashPayment, CreditPayment  | Domain/Payments.cs |
+| State pattern classes                | Domain/PaymentStates.cs |
+| Order                                | Domain/Order.cs |
+| Inventory (Observer subject)         | Domain/Inventory.cs |
+| Store (Singleton), save/load JSON    | Domain/Store.cs, Domain/Snapshot.cs |
+| Factories                            | Domain/Factories.cs |
+| AuditLog (Singleton)                 | Domain/AuditLog.cs |
+| Exceptions                           | Domain/Exceptions.cs |
+| Website pages                        | Pages/ |

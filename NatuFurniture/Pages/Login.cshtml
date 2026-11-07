@@ -1,0 +1,26 @@
+@page
+@model LoginModel
+@{ ViewData["Title"] = "Log in"; }
+
+<h1>Log in</h1>
+@if (Model.Problem != null) { <div class="flash bad">@Model.Problem</div> }
+
+<div class="two">
+    <form method="post" asp-page-handler="Staff" class="panel">
+        <h2>Staff</h2>
+        <p class="hint">Manager, sales or warehouse. Three wrong passwords lock the account.</p>
+        <label>Email <input name="email" type="email" required /></label>
+        <label>Password <input name="password" type="password" required /></label>
+        <button>Staff log in</button>
+    </form>
+
+    <form method="post" asp-page-handler="Customer" class="panel">
+        <h2>Customer</h2>
+        <p class="hint">Email only, no password. Ask staff to register you first.</p>
+        <label>Email <input name="email" type="email" required /></label>
+        <button>Customer log in</button>
+    </form>
+</div>
+
+<p class="hint">Demo accounts: natuenterprise@store.com / Natu@2026 (manager), sales@store.com / Sales@2026,
+    warehouse@store.com / Store@2026, customers thanish@mail.com and kevin@mail.com.</p>

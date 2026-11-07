@@ -1,0 +1,67 @@
+@page
+@model NatuFurniture.Pages.Manage.PeopleModel
+@{ ViewData["Title"] = "People"; }
+
+<h1>Customers</h1>
+<table class="items">
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Warnings</th><th>Credit</th></tr></thead>
+    <tbody>
+    @foreach (var c in Model.Customers)
+    {
+        <tr>
+            <td>@c.Name</td><td>@c.Email</td><td>@c.Phone</td><td>@c.WarningCount / 3</td>
+            <td>@if (c.IsBlacklisted) { <span class="tag bad">Blacklisted</span> } else { <span class="tag good">Eligible</span> }</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<form method="post" asp-page-handler="Customer" class="panel">
+    <h2>Register a customer</h2>
+    <div class="grid">
+        <label>Name <input name="name" required /></label>
+        <label>Email (their login) <input name="email" type="email" required /></label>
+        <label>Address <input name="address" /></label>
+        <label>Phone <input name="phone" /></label>
+    </div>
+    <button>Register</button>
+</form>
+
+@if (Model.Can("ManageStaff"))
+{
+    <h1>Staff</h1>
+    <table class="items">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Failed logins</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var s in Model.StaffList)
+        {
+            <tr>
+                <td>@s.Name</td><td>@s.Email</td><td>@s.Role</td>
+                <td>@s.FailedLogins @(s.FailedLogins >= 3 ? "(locked)" : "")</td>
+                <td>
+                    @if (s.FailedLogins > 0)
+                    {
+                        <form method="post" asp-page-handler="Unlock" class="inline-form">
+                            <input type="hidden" name="id" value="@s.Id" />
+                            <button class="secondary">Unlock</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <form method="post" asp-page-handler="Staff" class="panel">
+        <h2>Add a staff member</h2>
+        <div class="grid">
+            <label>Name <input name="name" required /></label>
+            <label>Email <input name="email" type="email" required /></label>
+            <label>Password (6+ characters) <input name="password" type="password" minlength="6" required /></label>
+            <label>Role
+                <select name="role"><option value="sales">Sales</option><option value="warehouse">Warehouse</option><option value="manager">Manager</option></select>
+            </label>
+        </div>
+        <button>Add staff</button>
+    </form>
+}

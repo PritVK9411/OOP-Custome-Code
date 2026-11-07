@@ -1,0 +1,57 @@
+@page
+@model OrdersModel
+@{ ViewData["Title"] = Model.StaffView ? "Orders" : "My orders"; }
+
+<h1>@(Model.StaffView ? "All orders" : "My orders")</h1>
+
+@if (Model.MeCustomer != null)
+{
+    var c = Model.MeCustomer;
+    <div class="panel">
+        <strong>Account:</strong> warnings @c.WarningCount of 3
+        @if (c.IsBlacklisted) { <span class="tag bad">Blacklisted - credit purchases blocked</span> }
+        @if (c.Notifications.Any())
+        {
+            <h2>Notices</h2>
+            <ul class="notes">@foreach (var n in c.Notifications.Take(6)) { <li>@n</li> }</ul>
+        }
+    </div>
+}
+
+@foreach (var o in Model.Orders)
+{
+    <article class="panel order-card">
+        <header>
+            <h2>Order #@o.Id</h2>
+            <span class="tag @(o.Status == OrderStatus.Cancelled ? "bad" : o.Status == OrderStatus.Placed ? "warn" : "good")">@o.Status</span>
+            @if (Model.StaffView) { <span class="hint">@o.Customer.Name</span> }
+        </header>
+        <ul>@foreach (var i in o.Items) { <li>@i.Describe()</li> }</ul>
+        <p><strong>Total:</strong> RM @o.CalculateTotal().ToString("N2") &nbsp; <strong>Payment:</strong> @o.Payment.Describe()</p>
+
+        @if (Model.CanTakePayment && o.Status != OrderStatus.Cancelled)
+        {
+            <div class="actions">
+                @if (o.Payment.Status != PaymentStatus.Paid)
+                {
+                    <form method="post" asp-page-handler="Pay" class="inline-form">
+                        <input type="hidden" name="orderId" value="@o.Id" />
+                        <label>Amount received (RM)
+                            <input name="amount" type="number" step="0.01" min="0.01"
+                                   value="@((o.Payment is CreditPayment cp ? Math.Min(cp.InstalmentAmount, cp.Outstanding) : o.Payment.Outstanding).ToString("0.00"))" />
+                        </label>
+                        <button>Take payment</button>
+                    </form>
+                }
+                @if (o.Status == OrderStatus.Paid)
+                {
+                    <form method="post" asp-page-handler="Deliver" class="inline-form">
+                        <input type="hidden" name="orderId" value="@o.Id" />
+                        <button class="secondary">Mark delivered</button>
+                    </form>
+                }
+            </div>
+        }
+    </article>
+}
+@if (!Model.Orders.Any()) { <p>No orders yet.</p> }

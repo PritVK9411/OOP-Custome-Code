@@ -1,0 +1,66 @@
+@page
+@model NatuFurniture.Pages.Manage.StockModel
+@{ ViewData["Title"] = "Stock"; }
+
+<h1>Stock</h1>
+
+@if (Model.MeStaff != null && Model.MeStaff.Notifications.Any())
+{
+    <div class="panel">
+        <h2>Alerts</h2>
+        <ul class="notes">@foreach (var n in Model.MeStaff.Notifications.Take(8)) { <li>@n</li> }</ul>
+    </div>
+}
+
+<table class="items">
+    <thead><tr><th>Item</th><th>Status</th><th>In stock</th><th>Update stock</th>@if (Model.Can("ChangePrice")) { <th>Base price</th> }</tr></thead>
+    <tbody>
+    @foreach (var f in Model.Items)
+    {
+        var stock = Model.Stock(f.Id);
+        <tr>
+            <td>@f.Describe()</td>
+            <td>@f.Status</td>
+            <td class="@(stock < Model.Threshold ? "low" : "")">@stock</td>
+            <td>
+                <form method="post" asp-page-handler="Stock" class="inline-form">
+                    <input type="hidden" name="id" value="@f.Id" />
+                    <input type="number" name="qty" min="0" value="@stock" class="narrow" />
+                    <button class="secondary">Set</button>
+                </form>
+            </td>
+            @if (Model.Can("ChangePrice"))
+            {
+                <td>
+                    <form method="post" asp-page-handler="Price" class="inline-form">
+                        <input type="hidden" name="id" value="@f.Id" />
+                        <input type="number" step="0.01" min="1" name="price" value="@f.BasePrice.ToString("0.00")" class="narrow" />
+                        <button class="secondary">Save</button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+<p class="hint">Stock below @Model.Threshold triggers a low-stock alert to warehouse staff and managers.</p>
+
+@if (Model.Can("AddFurniture"))
+{
+    <form method="post" asp-page-handler="Add" class="panel">
+        <h2>Add furniture</h2>
+        <div class="grid">
+            <label>Type
+                <select name="type"><option>Sofa</option><option>Table</option><option>Bed</option><option>Wardrobe</option></select>
+            </label>
+            <label>Name <input name="name" required /></label>
+            <label>Price (RM) <input name="price" type="number" step="0.01" min="1" required /></label>
+            <label>Quantity <input name="qty" type="number" min="0" value="1" /></label>
+            <label>Seats / length cm / doors <input name="a" type="number" min="0" value="0" /></label>
+            <label>Width cm (tables) <input name="b" type="number" min="0" value="0" /></label>
+            <label>Material / bed size <input name="text" placeholder="fabric, leather, Queen..." /></label>
+        </div>
+        <p class="hint">Sofa: seats + material. Table: length + width. Bed: size (Single, Double, Queen, King). Wardrobe: doors.</p>
+        <button>Add to catalogue</button>
+    </form>
+}

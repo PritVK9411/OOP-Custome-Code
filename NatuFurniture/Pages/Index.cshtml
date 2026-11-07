@@ -1,0 +1,61 @@
+@page
+@model IndexModel
+@{ ViewData["Title"] = "Catalogue"; }
+
+<section class="hero">
+    <h1>Furniture for rooms that get lived in</h1>
+    <p>Sofas, dining tables, beds and wardrobes. Pay cash in full, or on credit in instalments.
+        Repossessed pieces return to the shop as second-hand at a lower price.</p>
+</section>
+
+<form method="get" class="search">
+    <input name="q" value="@Model.Q" placeholder="Search by name or type: sofa, bed, oak..." />
+    <button>Search</button>
+</form>
+
+<form method="post" asp-page-handler="Order">
+    <table class="items">
+        <thead><tr><th></th><th>Item</th><th>Warranty</th><th>Stock</th></tr></thead>
+        <tbody>
+        @foreach (var f in Model.Items)
+        {
+            var stock = Model.Stock(f.Id);
+            <tr class="@(stock == 0 ? "gone" : "")">
+                <td>@if (Model.CanOrder && stock > 0 && f.Status == FurnitureStatus.InStock) { <input type="checkbox" name="ids" value="@f.Id" aria-label="Select @f.Name" /> }</td>
+                <td>@f.Describe()</td>
+                <td>@f.WarrantyMonths months</td>
+                <td>@(stock == 0 ? "Sold out" : stock + " left")</td>
+            </tr>
+        }
+        @if (!Model.Items.Any()) { <tr><td colspan="4">Nothing matches that search.</td></tr> }
+        </tbody>
+    </table>
+
+    @if (Model.CanOrder)
+    {
+        <div class="panel order">
+            <h2>Place an order</h2>
+            @if (Model.IsStaffOrderer)
+            {
+                <label>Customer
+                    <select name="customerId" required>
+                        @foreach (var c in Model.CustomerChoices) { <option value="@c.Id">@c.Name @(c.IsBlacklisted ? "(blacklisted)" : "")</option> }
+                    </select>
+                </label>
+            }
+            <fieldset>
+                <legend>Payment</legend>
+                <label class="inline"><input type="radio" name="paymentType" value="cash" checked /> Cash, paid in full at purchase</label>
+                <label class="inline"><input type="radio" name="paymentType" value="credit" /> Credit, in
+                    <input type="number" name="instalments" value="6" min="2" max="12" class="narrow" /> monthly instalments</label>
+            </fieldset>
+            <p class="hint">Credit: 7 days grace after a missed due date, then a 5% late fee and up to 3 warnings.
+                After the third missed warning the furniture is repossessed and credit is blocked.</p>
+            <button>Place order for ticked items</button>
+        </div>
+    }
+    else if (Model.Me == null)
+    {
+        <p class="hint"><a href="/Login">Log in</a> to place an order.</p>
+    }
+</form>

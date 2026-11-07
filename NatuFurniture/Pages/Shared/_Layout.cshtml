@@ -1,0 +1,52 @@
+@using System.Security.Claims
+@{
+    var role = Context.User.FindFirst(ClaimTypes.Role)?.Value;
+    var name = Context.User.Identity?.Name;
+    var signedIn = Context.User.Identity?.IsAuthenticated == true;
+    var isManager = role == "Manager";
+    var isSales = role == "Sales";
+    var isWarehouse = role == "Warehouse";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Natu Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+<header class="top">
+    <a class="brand" href="/">Natu <span>Enterprise</span></a>
+    <nav>
+        <a href="/">Catalogue</a>
+        @if (signedIn && !isWarehouse) { <a href="/Orders">@(role == "Customer" ? "My orders" : "Orders")</a> }
+        @if (isManager || isSales) { <a href="/Manage/People">People</a> }
+        @if (isManager || isWarehouse) { <a href="/Manage/Stock">Stock</a> }
+        @if (isManager) { <a href="/Manage/Overdue">Overdue checks</a> <a href="/Manage/Reports">Reports</a> }
+    </nav>
+    <div class="who">
+        @if (signedIn)
+        {
+            <span>@name <em>@role</em></span>
+            <form method="post" action="/Logout"><button class="link">Log out</button></form>
+        }
+        else
+        {
+            <a href="/Login">Log in</a>
+        }
+    </div>
+</header>
+
+<main>
+    @if (TempData["Message"] is string m) { <div class="flash ok">@m</div> }
+    @if (TempData["Error"] is string e) { <div class="flash bad">@e</div> }
+    @RenderBody()
+</main>
+
+<footer>Natu Enterprise furniture store management - demo build</footer>
+</body>
+</html>

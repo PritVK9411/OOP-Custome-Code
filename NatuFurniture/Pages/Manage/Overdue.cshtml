@@ -1,0 +1,42 @@
+@page
+@model NatuFurniture.Pages.Manage.OverdueModel
+@{ ViewData["Title"] = "Overdue checks"; }
+
+<h1>Process overdue payments</h1>
+
+<form method="post" asp-page-handler="Run" class="panel">
+    <label>Check payments as of
+        <input type="date" name="runDate" value="@Model.RunDate.ToString("yyyy-MM-dd")" />
+    </label>
+    <button>Run check</button>
+    <p class="hint">Each run moves a plan at most one step: Pending, Overdue (7-day grace and 5% late fee),
+        Warning 1, 2, 3, then Repossessed. Pick later dates to see the whole chain.</p>
+</form>
+
+@if (Model.Results.Any())
+{
+    <pre class="log">@string.Join("\n", Model.Results)</pre>
+}
+
+<h2>Credit plans</h2>
+<table class="items">
+    <thead><tr><th>Order</th><th>Customer</th><th>State</th><th>Next due</th><th>Outstanding</th></tr></thead>
+    <tbody>
+    @foreach (var o in Model.CreditOrders)
+    {
+        var cp = (CreditPayment)o.Payment;
+        <tr>
+            <td>#@o.Id</td><td>@o.Customer.Name</td><td>@cp.State.Name</td>
+            <td>@cp.NextDueDate.ToString("dd MMM yyyy")</td><td>RM @cp.Outstanding.ToString("N2")</td>
+        </tr>
+    }
+    @if (!Model.CreditOrders.Any()) { <tr><td colspan="5">No credit orders yet.</td></tr> }
+    </tbody>
+</table>
+
+<form method="post" asp-page-handler="Strategy" class="panel">
+    <h2>Second-hand pricing</h2>
+    <label class="inline"><input type="radio" name="kind" value="flat" @(Model.PricingKind == "flat" ? "checked" : "") /> Flat 50% discount</label>
+    <label class="inline"><input type="radio" name="kind" value="age" @(Model.PricingKind == "age" ? "checked" : "") /> Age depreciation (2% per month, never below 30%)</label>
+    <button class="secondary">Save strategy</button>
+</form>

@@ -1,0 +1,34 @@
+@page
+@model NatuFurniture.Pages.Manage.ReportsModel
+@{ ViewData["Title"] = "Reports"; }
+
+<h1>Reports</h1>
+
+<h2>Sales</h2>
+<p>@Model.AllOrders.Count orders placed. Money collected so far: <strong>RM @Model.Collected.ToString("N2")</strong>.</p>
+<table class="items">
+    <thead><tr><th>Order</th><th>Customer</th><th>Status</th><th>Total</th><th>Paid</th></tr></thead>
+    <tbody>
+    @foreach (var o in Model.AllOrders.OrderByDescending(x => x.Id))
+    {
+        <tr><td>#@o.Id</td><td>@o.Customer.Name</td><td>@o.Status</td><td>RM @o.CalculateTotal().ToString("N2")</td><td>RM @o.Payment.AmountPaid.ToString("N2")</td></tr>
+    }
+    </tbody>
+</table>
+
+<h2>Overdue customers</h2>
+@if (!Model.Overdue.Any()) { <p>Nobody is currently overdue.</p> }
+else
+{
+    <ul>@foreach (var o in Model.Overdue) { <li>@o.Customer.Name - order #@o.Id - @o.Payment.Describe()</li> }</ul>
+}
+
+<h2>Repossessed / second-hand items</h2>
+@if (!Model.Repossessed.Any()) { <p>No repossessed items.</p> }
+else
+{
+    <ul>@foreach (var f in Model.Repossessed) { <li>@f.Describe() (was RM @f.BasePrice.ToString("N2") new)</li> }</ul>
+}
+
+<h2>Audit log</h2>
+<pre class="log">@(Model.Audit.Count == 0 ? "No entries yet." : string.Join("\n", Model.Audit.Take(100)))</pre>
