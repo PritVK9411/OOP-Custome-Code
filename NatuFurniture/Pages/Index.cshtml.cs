@@ -5,6 +5,21 @@ namespace NatuFurniture.Pages;
 
 public class IndexModel : AppPage
 {
+    private readonly IWebHostEnvironment env;
+    public IndexModel(IWebHostEnvironment env) { this.env = env; }
+
+    // Looks for the picture with .jpg, .jpeg, .png or .webp; returns null if there isn't one.
+    public string? ImageUrl(Furniture f)
+    {
+        var webRoot = env.WebRootPath ?? Path.Combine(env.ContentRootPath, "wwwroot");
+        foreach (var ext in new[] { ".jpg", ".jpeg", ".png", ".webp" })
+        {
+            var file = Path.Combine(webRoot, "images", f.ImageName + ext);
+            if (System.IO.File.Exists(file)) return "/images/" + f.ImageName + ext;
+        }
+        return null;
+    }
+
     [BindProperty(SupportsGet = true)] public string? Q { get; set; }
     public List<Furniture> Items { get; set; } = new();
 

@@ -11,7 +11,7 @@ public abstract class Furniture
     public DateTime AddedOn { get; internal set; } = DateTime.Today;
     public abstract int WarrantyMonths { get; }
     public string TypeName => GetType().Name;
-
+    public string ImageName => $"{TypeName}-{Name}".ToLowerInvariant().Replace(' ', '-');
     protected Furniture(int id, string name, decimal price)
     {
         Id = id;

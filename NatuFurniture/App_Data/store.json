@@ -69,7 +69,7 @@
       "Condition": 0,
       "Status": 0,
       "AddedOn": "2026-11-07T00:00:00+08:00",
-      "Stock": 2,
+      "Stock": 1,
       "A": 2,
       "B": 0,
       "S": "leather"
@@ -131,6 +131,43 @@
       "S": ""
     }
   ],
-  "Orders": [],
+  "Orders": [
+    {
+      "Id": 1001,
+      "CustomerId": 5,
+      "Status": 0,
+      "PlacedOn": "2026-11-22T15:12:34.975638+08:00",
+      "Items": [
+        {
+          "Id": 7,
+          "Type": "Sofa",
+          "Name": "Chesterfield",
+          "BasePrice": 1450,
+          "CurrentPrice": 1450,
+          "Condition": 0,
+          "Status": 1,
+          "AddedOn": "2026-11-07T00:00:00+08:00",
+          "Stock": 0,
+          "A": 2,
+          "B": 0,
+          "S": "leather"
+        }
+      ],
+      "Payment": {
+        "Id": 1,
+        "Kind": "credit",
+        "Total": 1450,
+        "Paid": 0,
+        "Status": 0,
+        "ChangeDue": 0,
+        "Instalments": 6,
+        "InstalmentsPaid": 0,
+        "NextDue": "2026-12-22T00:00:00+08:00",
+        "LastAction": "2026-11-22T00:00:00+08:00",
+        "LateFees": 0,
+        "StateName": "Pending"
+      }
+    }
+  ],
   "Pricing": "flat"
 }

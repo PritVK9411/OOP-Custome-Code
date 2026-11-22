@@ -17,7 +17,6 @@ C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurnitu
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\scopedcss\bundle\NatuFurniture.styles.css
-C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\compressed\7lbfmyh260-{0}-z6b14uenr2-z6b14uenr2.gz
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\staticwebassets.development.json
@@ -30,3 +29,5 @@ C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurnitu
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\ref\NatuFurniture.dll
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\NatuFurniture.RazorAssemblyInfo.cache
 C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\NatuFurniture.RazorAssemblyInfo.cs
+C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\NatuFurniture.sourcelink.json
+C:\Users\admin\OneDrive\Desktop\Prit_OOP_CustomCode\OOP-Custome-Code\NatuFurniture\obj\Debug\net10.0\compressed\7lbfmyh260-{0}-jalnp6nyp8-jalnp6nyp8.gz

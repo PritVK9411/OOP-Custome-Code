@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NatuFurniture")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3dc9e059080d7418e96f8f653785bc1222e2fb08")]
 [assembly: System.Reflection.AssemblyProductAttribute("NatuFurniture")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NatuFurniture")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

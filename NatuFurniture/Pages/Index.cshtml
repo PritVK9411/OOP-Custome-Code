@@ -22,7 +22,11 @@
             var stock = Model.Stock(f.Id);
             <tr class="@(stock == 0 ? "gone" : "")">
                 <td>@if (Model.CanOrder && stock > 0 && f.Status == FurnitureStatus.InStock) { <input type="checkbox" name="ids" value="@f.Id" aria-label="Select @f.Name" /> }</td>
-                <td>@f.Describe()</td>
+                <td>
+                    @{ var img = Model.ImageUrl(f); }
+                    @if (img != null) { <img src="@img" alt="@f.Name" class="thumb" /> }
+                    @f.Describe()
+                </td>
                 <td>@f.WarrantyMonths months</td>
                 <td>@(stock == 0 ? "Sold out" : stock + " left")</td>
             </tr>
